@@ -1,4 +1,4 @@
-import { PrismaClient, CourseStatus, DifficultyLevel, NotificationType, ProgressStatus, QuestionType } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
@@ -51,9 +51,9 @@ async function main() {
       title: 'Node.js Fundamentals',
       description: 'Base course for LMS bootstrap',
       category: 'Backend',
-      difficulty: DifficultyLevel.BEGINNER,
+      difficulty: "BEGINNER",
       durationMinutes: 180,
-      status: CourseStatus.PUBLISHED,
+      status: "PUBLISHED",
       isPublished: true,
       modules: {
         create: [
@@ -84,7 +84,7 @@ async function main() {
           questions: {
             create: {
               questionText: 'Node.js built on?',
-              questionType: QuestionType.SINGLE_CHOICE,
+              questionType: "SINGLE_CHOICE",
               sortOrder: 1,
               answers: {
                 create: [
@@ -106,7 +106,7 @@ async function main() {
       userId: employee.id,
       courseId: course.id,
       progressPercent: 15,
-      status: ProgressStatus.IN_PROGRESS,
+      status: "IN_PROGRESS",
       startedAt: new Date(),
     },
   });
@@ -116,7 +116,7 @@ async function main() {
       userId: employee.id,
       title: 'Добро пожаловать',
       message: 'Ваш курс назначен и готов к прохождению.',
-      type: NotificationType.INFO,
+      type: "INFO",
     },
   });
 

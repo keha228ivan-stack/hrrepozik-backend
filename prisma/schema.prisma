@@ -3,48 +3,15 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-enum CourseStatus {
-  DRAFT
-  PUBLISHED
-  ARCHIVED
-}
 
-enum DifficultyLevel {
-  BEGINNER
-  INTERMEDIATE
-  ADVANCED
-}
 
-enum ProgressStatus {
-  NOT_STARTED
-  IN_PROGRESS
-  PAUSED
-  COMPLETED
-}
 
-enum QuestionType {
-  SINGLE_CHOICE
-  MULTIPLE_CHOICE
-  TEXT
-}
 
-enum NotificationType {
-  INFO
-  WARNING
-  SUCCESS
-  SYSTEM
-}
 
-enum SuggestionStatus {
-  NEW
-  IN_REVIEW
-  APPROVED
-  REJECTED
-}
 
 model Role {
   id          String @id @default(cuid())
@@ -92,9 +59,9 @@ model Course {
   title             String
   description       String
   category          String
-  difficulty        DifficultyLevel
+  difficulty        String
   durationMinutes   Int                  @map("duration_minutes")
-  status            CourseStatus         @default(DRAFT)
+  status            String         @default("DRAFT")
   isPublished       Boolean              @default(false) @map("is_published")
   createdAt         DateTime             @default(now()) @map("created_at")
   updatedAt         DateTime             @updatedAt @map("updated_at")
@@ -181,7 +148,7 @@ model TestQuestion {
   id           String       @id @default(cuid())
   testId        String       @map("test_id")
   questionText  String       @map("question_text")
-  questionType  QuestionType @map("question_type")
+  questionType  String @map("question_type")
   sortOrder     Int          @map("sort_order")
   test          Test         @relation(fields: [testId], references: [id], onDelete: Cascade)
   answers       TestAnswer[]
@@ -203,7 +170,7 @@ model UserCourseProgress {
   startedAt       DateTime?      @map("started_at")
   completedAt     DateTime?      @map("completed_at")
   currentLessonId String?        @map("current_lesson_id")
-  status          ProgressStatus @default(NOT_STARTED)
+  status          String @default("NOT_STARTED")
   user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   course          Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
   currentLesson   Lesson?        @relation("CurrentLesson", fields: [currentLessonId], references: [id])
@@ -261,7 +228,7 @@ model Notification {
   userId    String           @map("user_id")
   title     String
   message   String
-  type      NotificationType
+  type      String
   isRead    Boolean          @default(false) @map("is_read")
   createdAt DateTime         @default(now()) @map("created_at")
   user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -310,6 +277,6 @@ model CourseSuggestion {
   title       String
   description String
   createdAt   DateTime         @default(now()) @map("created_at")
-  status      SuggestionStatus @default(NEW)
+  status      String @default("NEW")
   user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
