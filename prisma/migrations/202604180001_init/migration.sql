@@ -1,0 +1,2 @@
+-- Initial migration placeholder.
+-- Use `npm run prisma:migrate` to generate exact SQL from prisma/schema.prisma in your local environment.
